@@ -1,7 +1,11 @@
 <template>
   <v-app>
+    <v-content>
       <toolbar></toolbar>
-      <router-view/>
+      <v-container grid-list-md text-xs-center>
+        <router-view></router-view>
+      </v-container>  
+    </v-content>
   </v-app>
 </template>
 

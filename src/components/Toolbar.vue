@@ -3,26 +3,39 @@
     <v-toolbar-side-icon></v-toolbar-side-icon>
     <v-toolbar-title class="white--text">Test</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn 
-      icon
-      href="#/login">
-      <v-icon>person</v-icon>
-    </v-btn>
-    <v-btn 
-      icon
-      href="#/register">
-      <v-icon>person_add</v-icon>
-    </v-btn>
-    <v-btn
-      icon
-      v-on:click="logout">
-      <v-icon>whatshot</v-icon>
-    </v-btn>
+    <div class="text-xs-center">
+      <v-btn 
+        outline
+        :to="{name:'Login'}"
+        v-if="!isAuth">
+        <v-icon>person</v-icon>Log in
+      </v-btn>
+      <v-btn 
+        outline
+        :to="{name: 'Register'}"
+        v-if="!isAuth">
+        <v-icon>person_add</v-icon>Register
+      </v-btn>
+      <v-btn
+        outline
+        v-on:click="logout"
+        v-if="isAuth">
+        <v-icon>whatshot</v-icon>Log out
+      </v-btn>
+    </div>
   </v-toolbar>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      isAuth: null
+    }
+  },
+  created () {
+    this.isAuth = this.$auth.isAuthenticated()
+  },
   methods: {
     logout () {
       this.$auth.destroyToken()
@@ -32,3 +45,6 @@ export default {
 }
 </script>
 
+<style>
+
+</style>

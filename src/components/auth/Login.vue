@@ -53,12 +53,12 @@ export default {
     login () {
       var data = {
         client_id: 2,
-        client_secret: 'fbm7wLnYE98ZWFl6JpCdvBdA9ApnV6hfMqdlhFL9',
+        client_secret: '1DOBdaGVEkyw1JFv0WOD32ANbixT6Sot2xGg4TaU',
         grant_type: 'password',
         username: this.email,
         password: this.password
       }
-      this.$http.post('http://localhost:8000/oauth/token', data)
+      this.$http.post('oauth/token', data)
       .then(response => {
         this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
         this.$router.push('/feed')

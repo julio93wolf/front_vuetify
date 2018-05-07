@@ -4,6 +4,8 @@ import Login from '@/components/auth/Login'
 import Home from '@/components/auth/Home'
 import Feed from '@/components/Feed'
 
+import ProductCreate from '@/components/product/Create'
+
 Vue.use(Router)
 
 export default new Router({
@@ -18,7 +20,7 @@ export default new Router({
     },
     {
       path: '/register',
-      name: 'Home',
+      name: 'Register',
       component: Home,
       meta: {
         forVisitors: true
@@ -31,6 +33,15 @@ export default new Router({
       meta: {
         forAuth: true
       }
+    },
+    {
+      path: '/products/create',
+      name: 'ProductCreate',
+      component: ProductCreate,
+      meta: {
+        forAuth: true
+      }
     }
-  ]
+  ],
+  mode: 'history'
 })
