@@ -1,20 +1,15 @@
 <template>
   <v-form ref="form">
     <v-text-field
-      v-validate="'required'"
       v-model="product.name"
       :counter="255"
-      :error-messages="errors.collect('name')"
       label="Name"
-      data-vv-name="name"
       required
     ></v-text-field>
     <v-text-field
-      v-validate="'required|decimal|min_value:0'"
-      :error-messages="errors.collect('price')"
-      data-vv-name="price"
       v-model="product.price"
       label="Price"
+      required
       type="number"
     ></v-text-field>
     <v-text-field
@@ -24,8 +19,8 @@
       multi-line
     ></v-text-field>
     <v-btn
-      @click="create"
-    >Create
+      @click="update"
+    >Update
     </v-btn>
     <v-btn :to="{name: 'Feed'}" >Cancel</v-btn>
   </v-form>
@@ -33,28 +28,27 @@
 
 <script>
 export default {
-  $_veeValidate: {
-    validator: 'new'
+  created () {
+    this.getProduct()
   },
   data () {
     return {
-      product: {
-        name: '',
-        price: '',
-        description: ''
-      }
+      product: {}
     }
   },
   methods: {
-    create () {
-      this.$validator.validateAll()
+    getProduct () {
+      this.$http.get('api/products/' + this.$route.params.product)
       .then(response => {
-        if (response) {
-          this.$http.post('api/products', this.product)
-          .then(response => {
-            this.$router.push('/feed')
-          })
-        }
+        this.product = response.body
+      })
+    },
+    update () {
+      console.log('update')
+      this.$http.put('api/products/' + this.$route.params.product, this.product)
+      .then(response => {
+        // this.$router.push('/feed')
+        this.$swal('Updated!', 'Your product has been updated', 'success')
       })
     }
   }

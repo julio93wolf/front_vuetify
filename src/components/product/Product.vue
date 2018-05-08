@@ -10,6 +10,16 @@
       <v-card-actions>
         <v-btn flat color="orange">Whish list</v-btn>
         <v-btn flat color="orange">Buy</v-btn>
+        <v-btn 
+          flat 
+          color="red" 
+          v-on:click="$emit('deleteProduct')"
+        >Delete</v-btn>
+        <v-btn 
+          flat 
+          color="orange"
+          :to="'/products/' + product.id + '/edit'"
+        >Edit</v-btn>
       </v-card-actions>
     </v-card>
   </v-flex>
@@ -17,6 +27,6 @@
 
 <script>
 export default {
-  props: ['product']
+  props: ['product', 'authenticatedUser']
 }
 </script>

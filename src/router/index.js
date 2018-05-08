@@ -5,6 +5,7 @@ import Home from '@/components/auth/Home'
 import Feed from '@/components/Feed'
 
 import ProductCreate from '@/components/product/Create'
+import ProductEdit from '@/components/product/Edit'
 
 Vue.use(Router)
 
@@ -38,6 +39,14 @@ export default new Router({
       path: '/products/create',
       name: 'ProductCreate',
       component: ProductCreate,
+      meta: {
+        forAuth: true
+      }
+    },
+    {
+      path: '/products/:product/edit',
+      name: 'ProductEdit',
+      component: ProductEdit,
       meta: {
         forAuth: true
       }

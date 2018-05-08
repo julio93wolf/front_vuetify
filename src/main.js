@@ -7,13 +7,29 @@ import VueResource from 'vue-resource'
 import Auth from './packages/auth/Auth'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import VueSweetalert2 from 'vue-sweetalert2'
+import VeeValidate from 'vee-validate'
 
+Vue.use(VeeValidate)
 Vue.use(VueResource)
 Vue.use(Vuetify)
 Vue.use(Auth)
+Vue.use(VueSweetalert2)
 
 Vue.http.options.root = 'http://localhost:8000'
 Vue.http.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken()
+
+Vue.http.interceptors.push((request, next) => {
+  next(response => {
+    if (response.status === 404) {
+      Vue.swal(response.status.toString(), response.statusText, 'error')
+    } else {
+      if (response.status === 500) {
+        Vue.swal(response.status.toString(), 'We are experiencing a problem in our servers!', 'error')
+      }
+    }
+  })
+})
 
 Vue.config.productionTip = false
 
