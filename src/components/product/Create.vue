@@ -1,21 +1,23 @@
 <template>
   <v-form ref="form">
     <v-text-field
-      v-validate="'required'"
       v-model="product.name"
+      label="Name"
+      type="text"
       :counter="255"
       :error-messages="errors.collect('name')"
-      label="Name"
+      v-validate="'required'"
       data-vv-name="name"
       required
     ></v-text-field>
     <v-text-field
-      v-validate="'required|decimal|min_value:0'"
-      :error-messages="errors.collect('price')"
-      data-vv-name="price"
       v-model="product.price"
       label="Price"
       type="number"
+      v-validate="'required|decimal|min_value:0'"
+      :error-messages="errors.collect('price')"
+      data-vv-name="price"
+      required
     ></v-text-field>
     <v-text-field
       v-model="product.description"
@@ -23,6 +25,7 @@
       required
       multi-line
     ></v-text-field>
+    <input type="file" @change="imageChanged" />
     <v-btn
       @click="create"
     >Create
@@ -41,9 +44,24 @@ export default {
       product: {
         name: '',
         price: '',
-        description: ''
+        description: '',
+        image: ''
+      },
+      dictionary: {
+        attributes: {
+          name: 'Nombre'
+        },
+        custom: {
+          price: {
+            required: 'El precio no puede estar vacio',
+            decimal: 'Tiene que ser un numero'
+          }
+        }
       }
     }
+  },
+  mounted () {
+    this.$validator.localize('es', this.dictionary)
   },
   methods: {
     create () {
@@ -56,6 +74,14 @@ export default {
           })
         }
       })
+    },
+    imageChanged (event) {
+      console.log(event.target.files[0])
+      var fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      fileReader.onload = (event) => {
+        this.product.image = event.target.result
+      }
     }
   }
 }

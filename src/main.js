@@ -9,8 +9,16 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VeeValidate from 'vee-validate'
+import VueValidationEsp from 'vee-validate/dist/locale/es'
 
-Vue.use(VeeValidate)
+const configVeeValidate = {
+  locale: 'es',
+  dictionary: {
+    es: VueValidationEsp
+  }
+}
+
+Vue.use(VeeValidate, configVeeValidate)
 Vue.use(VueResource)
 Vue.use(Vuetify)
 Vue.use(Auth)
