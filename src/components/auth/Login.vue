@@ -15,7 +15,11 @@
                   label="Email" 
                   id="email" 
                   type="email"
-                  v-model="email">
+                  v-model="email"
+                  :error-messages="errors.collect('email')"
+                  v-validate="'required|email'"
+                  data-vv-name="email"
+                  required>
                 </v-text-field>
                 <v-text-field 
                   prepend-icon="lock" 
@@ -23,15 +27,27 @@
                   label="Password" 
                   id="password" 
                   type="password"
-                  v-model="password">
+                  v-model="password"
+                  :error-messages="errors.collect('password')"
+                  v-validate="'required|min:4'"
+                  data-vv-name="password"
+                  required>
                 </v-text-field>
+                <v-alert
+                  :value="error.status"
+                  type="error"
+                  dismissible
+                  transition="scale-transition"
+                >
+                  {{error.message}}
+                </v-alert>
               </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn 
                 color="primary"
-                v-on:click="login"
+                v-on:click="validate"
               >Login</v-btn>
             </v-card-actions>
           </v-card>
@@ -43,11 +59,22 @@
 
 <script>
 export default {
+  $_veeValidate: {
+    validator: 'new'
+  },
   data: () => {
     return {
       email: '',
-      password: ''
+      password: '',
+      dictionary: {},
+      error: {
+        status: false,
+        message: ''
+      }
     }
+  },
+  mounted () {
+    this.$validator.localize('es', this.dictionary)
   },
   methods: {
     login () {
@@ -63,8 +90,26 @@ export default {
         this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
         this.$router.push('/feed')
       })
-      .catch(error => {
-        console.log(error)
+      .catch(response => {
+        let errorUser = {
+          field: 'email',
+          msg: response.body.message
+        }
+        let errorPassword = {
+          field: 'password',
+          msg: response.body.message
+        }
+        this.errors.items.push(errorUser)
+        this.errors.items.push(errorPassword)
+        console.log(response)
+      })
+    },
+    validate () {
+      this.$validator.validateAll()
+      .then(response => {
+        if (response) {
+          this.login()
+        }
       })
     }
   }

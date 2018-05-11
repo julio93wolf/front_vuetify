@@ -72,6 +72,9 @@ export default {
           .then(response => {
             this.$router.push('/feed')
           })
+          .catch(response => {
+            console.log(response)
+          })
         }
       })
     },
