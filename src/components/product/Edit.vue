@@ -73,6 +73,17 @@ export default {
           .then(response => {
             // this.$router.push('/feed')
             this.$swal('Updated!', 'Your product has been updated', 'success')
+            this.errors.items = []
+          })
+          .catch(response => {
+            let errorsBody = response.body.errors
+            for (var errorBody in errorsBody) {
+              let error = {
+                field: errorBody,
+                msg: errorsBody[errorBody]
+              }
+              this.errors.items.push(error)
+            }
           })
         }
       })

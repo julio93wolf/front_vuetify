@@ -73,7 +73,14 @@ export default {
             this.$router.push('/feed')
           })
           .catch(response => {
-            console.log(response)
+            let errorsBody = response.body.errors
+            for (var errorBody in errorsBody) {
+              let error = {
+                field: errorBody,
+                msg: errorsBody[errorBody]
+              }
+              this.errors.items.push(error)
+            }
           })
         }
       })
